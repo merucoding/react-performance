@@ -3,6 +3,7 @@ import { CountryCard } from '../country-card/country-card';
 import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
 
 import styles from './country-list.module.css';
+import { memo } from 'react';
 
 type CountryListProps = {
   countries: Country[];
@@ -12,10 +13,9 @@ type CountryListProps = {
   selectedYear: number;
   sortField: 'name' | 'population';
   sortOrder: 'asc' | 'desc';
-  onYearChange: (year: number) => void;
 };
 
-export const CountryList = ({
+export const CountryList = memo(({
   countries,
   searchQuery,
   selectedColumns,
@@ -52,4 +52,4 @@ export const CountryList = ({
       ))}
     </div>
   );
-};
+});
