@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useCo2Data } from '../../hooks/useCo2Data';
 import { LoadingSpinner } from '../loading-spinner/loading-spinner';
 import { SearchBar } from '../search-bar/search-bar';
@@ -26,19 +26,19 @@ export const App = () => {
 
   const years = useMemo(() => (data ? getAvailableYears(data) : []), [data]);
 
-  const handleSortOrderToggle = () => {
+  const handleSortOrderToggle = useCallback(() => {
     setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-  };
+  }, []);
 
-  const handleColumnToggle = (column: string) => {
+  const handleColumnToggle = useCallback((column: string) => {
     setSelectedColumns((prev) =>
       prev.includes(column) ? prev.filter((c) => c !== column) : [...prev, column]
     );
-  };
+  }, []);
 
-  const handleModalToggle = () => {
+  const handleModalToggle = useCallback(() => {
     setIsColumnModalOpen((prev) => !prev);
-  };
+  }, []);
 
   if (isLoading) {
     return <LoadingSpinner />;
