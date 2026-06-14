@@ -48,6 +48,7 @@ export type Country = {
   id: string;
   iso_code?: string;
   data: YearData[];
+  years: number[];
 };
 
 export type ColumnOption = {

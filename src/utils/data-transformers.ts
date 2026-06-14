@@ -47,8 +47,8 @@ export const getAvailableYears = (countries: Country[]): number[] => {
   const years = new Set<number>();
 
   countries.forEach((country) => {
-    country.data.forEach((yearData) => {
-      years.add(yearData.year);
+    country.years.forEach((year) => {
+      years.add(year);
     });
   });
 
