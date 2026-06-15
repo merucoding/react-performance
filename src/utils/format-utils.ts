@@ -13,7 +13,6 @@ export const formatNumber = (
   if (value === undefined || value === null) {
     return 'N/A';
   }
-  console.log(value);
 
   return value.toLocaleString('en-US', options ?? { maximumFractionDigits: 0 });
 };
