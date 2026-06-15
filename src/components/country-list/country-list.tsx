@@ -1,9 +1,10 @@
 import type { Country } from '../../types';
 import { CountryCard } from '../country-card/country-card';
 import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
+import { memo, useMemo } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
 import styles from './country-list.module.css';
-import { memo, useMemo } from 'react';
 
 type CountryListProps = {
   countries: Country[];
@@ -40,14 +41,18 @@ export const CountryList = memo(
 
     return (
       <div className={styles.countryList}>
-        {filteredCountries.map((country) => (
-          <CountryCard
-            key={country.id}
-            country={country}
-            selectedYear={selectedYear}
-            selectedColumns={selectedColumns}
-          />
-        ))}
+        <Virtuoso
+          useWindowScroll
+          data={filteredCountries}
+          itemContent={(_, country) => (
+            <CountryCard
+              key={country.id}
+              country={country}
+              selectedYear={selectedYear}
+              selectedColumns={selectedColumns}
+            />
+          )}
+        />
       </div>
     );
   }
