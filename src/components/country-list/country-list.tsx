@@ -1,55 +1,60 @@
-import type { Country } from '../../types';
+import type { Country, CountrySort, OrderSort } from '../../types';
 import { CountryCard } from '../country-card/country-card';
 import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
+import { memo, useMemo } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
 import styles from './country-list.module.css';
+import { COUNTRY_SORT, ORDER_SORT } from '../../constants';
 
 type CountryListProps = {
   countries: Country[];
   searchQuery: string;
   selectedColumns: string[];
-  selectedRegion: string;
   selectedYear: number;
-  sortField: 'name' | 'population';
-  sortOrder: 'asc' | 'desc';
-  onYearChange: (year: number) => void;
+  sortField: CountrySort;
+  sortOrder: OrderSort;
 };
 
-export const CountryList = ({
-  countries,
-  searchQuery,
-  selectedColumns,
-  selectedRegion,
-  selectedYear,
-  sortField,
-  sortOrder,
-}: CountryListProps) => {
-  const filteredCountries = countries
-    .filter((c) => {
-      const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
-      return matchesSearch && matchesRegion;
-    })
-    .sort((a, b) => {
-      if (sortField === 'name') {
-        return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
-      } else {
-        const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-        const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
-        return sortOrder === 'asc' ? popA - popB : popB - popA;
-      }
-    });
+export const CountryList = memo(
+  ({
+    countries,
+    searchQuery,
+    selectedColumns,
+    selectedYear,
+    sortField,
+    sortOrder,
+  }: CountryListProps) => {
+    const filteredCountries = useMemo(() => {
+      return countries
+        .filter((c) => c.id.toLowerCase().includes(searchQuery.toLowerCase()))
+        .sort((a, b) => {
+          if (sortField === COUNTRY_SORT.name) {
+            return sortOrder === ORDER_SORT.asc ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
+          }
 
-  return (
-    <div className={styles.countryList}>
-      {filteredCountries.map((country, index) => (
-        <CountryCard
-          key={index}
-          country={country}
-          selectedYear={selectedYear}
-          selectedColumns={selectedColumns}
+          const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
+          const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
+
+          return sortOrder === ORDER_SORT.asc ? popA - popB : popB - popA;
+        });
+    }, [countries, searchQuery, selectedYear, sortField, sortOrder]);
+
+    return (
+      <div className={styles.countryList}>
+        <Virtuoso
+          useWindowScroll
+          data={filteredCountries}
+          itemContent={(_, country) => (
+            <CountryCard
+              key={country.id}
+              country={country}
+              selectedYear={selectedYear}
+              selectedColumns={selectedColumns}
+            />
+          )}
         />
-      ))}
-    </div>
-  );
-};
+      </div>
+    );
+  }
+);

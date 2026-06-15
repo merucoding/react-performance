@@ -16,26 +16,6 @@
   margin-bottom: 20px;
 }
 
-.sortContainer {
-  margin-bottom: 16px;
-}
-
-.sortLabel {
-  margin-right: 8px;
-}
-
-.sortSelect {
-  padding: 8px;
-  font-size: 16px;
-  margin-right: 8px;
-}
-
-.sortButton {
-  padding: 8px 16px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
 .columnButtonContainer {
   margin-top: 8px;
 }

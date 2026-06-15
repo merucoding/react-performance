@@ -24,6 +24,7 @@ export const useCo2Data = () => {
             id: countryName,
             iso_code: data.iso_code,
             data: data.data,
+            years: data.data.map((item) => item.year),
           };
         }) as Country[];
 
