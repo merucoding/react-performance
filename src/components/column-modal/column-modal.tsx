@@ -1,4 +1,4 @@
-import { AVAILABLE_COLUMN_LIST } from '../../utils/data-transformers';
+import { AVAILABLE_COLUMN_LIST } from '../../constants';
 import styles from './column-modal.module.css';
 
 type ColumnModalProps = {
@@ -8,12 +8,7 @@ type ColumnModalProps = {
   onClose: () => void;
 };
 
-export const ColumnModal = ({
-  isOpen,
-  selectedColumns,
-  onToggle,
-  onClose,
-}: ColumnModalProps) => {
+export const ColumnModal = ({ isOpen, selectedColumns, onToggle, onClose }: ColumnModalProps) => {
   if (!isOpen) {
     return null;
   }

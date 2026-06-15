@@ -6,28 +6,31 @@ import { YearSelector } from '../year-selector/year-selector';
 import { CountryList } from '../country-list/country-list';
 import { ColumnModal } from '../column-modal/column-modal';
 import { getAvailableYears } from '../../utils/data-transformers';
+import { CountrySortSelect } from '../country-sort/country-sort';
+import type { CountrySort, OrderSort } from '../../types';
+import {
+  COUNTRY_SORT,
+  INITIAL_COLUMN_VALUE,
+  INITIAL_SELECTED_YEAR,
+  ORDER_SORT,
+} from '../../constants';
 
 import styles from './app.module.css';
-
-const INITIAL_COLUMN_VALUE = ['year', 'population', 'co2', 'co2_per_capita'];
-
-type CountrySort = 'name' | 'population';
-type OrderSort = 'asc' | 'desc';
 
 export const App = () => {
   const { data, isLoading, error } = useCo2Data();
 
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedYear, setSelectedYear] = useState<number>(2020);
-  const [sortField, setSortField] = useState<CountrySort>('population');
-  const [sortOrder, setSortOrder] = useState<OrderSort>('desc');
+  const [selectedYear, setSelectedYear] = useState<number>(INITIAL_SELECTED_YEAR);
+  const [sortField, setSortField] = useState<CountrySort>(COUNTRY_SORT.population);
+  const [sortOrder, setSortOrder] = useState<OrderSort>(ORDER_SORT.desc);
   const [selectedColumns, setSelectedColumns] = useState<string[]>(INITIAL_COLUMN_VALUE);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState<boolean>(false);
 
   const years = useMemo(() => (data ? getAvailableYears(data) : []), [data]);
 
   const handleSortOrderToggle = useCallback(() => {
-    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+    setSortOrder((prev) => (prev === ORDER_SORT.asc ? ORDER_SORT.desc : ORDER_SORT.asc));
   }, []);
 
   const handleColumnToggle = useCallback((column: string) => {
@@ -56,26 +59,16 @@ export const App = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>CO₂ Emissions Data Explorer</h1>
 
-      {/* Controls */}
       <div className={styles.controls}>
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
         <YearSelector year={selectedYear} years={years} onChange={setSelectedYear} />
 
-        <div className={styles.sortContainer}>
-          <label className={styles.sortLabel}>Sort by:</label>
-          <select
-            value={sortField}
-            onChange={(e) => setSortField(e.target.value as CountrySort)}
-            className={styles.sortSelect}
-          >
-            <option value="population">Population</option>
-            <option value="name">Name</option>
-          </select>
-
-          <button onClick={handleSortOrderToggle} className={styles.sortButton}>
-            {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
-          </button>
-        </div>
+        <CountrySortSelect
+          sortField={sortField}
+          sortOrder={sortOrder}
+          onChange={setSortField}
+          onSortOrderToggle={handleSortOrderToggle}
+        />
 
         <div className={styles.columnButtonContainer}>
           <button onClick={handleModalToggle} className={styles.columnButton}>
@@ -84,7 +77,6 @@ export const App = () => {
         </div>
       </div>
 
-      {/* Country List */}
       <CountryList
         countries={data}
         searchQuery={searchQuery}
@@ -94,7 +86,6 @@ export const App = () => {
         sortOrder={sortOrder}
       />
 
-      {/* Column Modal */}
       <ColumnModal
         isOpen={isColumnModalOpen}
         selectedColumns={selectedColumns}

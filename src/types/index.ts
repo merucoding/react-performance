@@ -56,3 +56,7 @@ export type ColumnOption = {
   label: string;
   category: 'basic' | 'additional';
 };
+
+export type CountrySort = 'name' | 'population';
+
+export type OrderSort = 'asc' | 'desc';
