@@ -23,7 +23,7 @@
 ### Interaction D: Toggle column
 
 - **Commit duration**: N/A
-- **Render duration**: 298.6 ms
+- **Render duration**: 299.8 ms
 - **Screenshot**: ![Toggle column](performance-starter/screenshots/baseline/toggle-column.png)
 
 ## Optimized Measurements
@@ -49,7 +49,7 @@
 ### Interaction D: Toggle column
 
 - **Commit duration**: N/A
-- **Render duration**: 11.8 ms
+- **Render duration**: 10.9 ms
 - **Screenshot**: ![Toggle column](performance-starter/screenshots/optimized/toggle-column-opt.png)
 
 ## Summary of Improvements
@@ -59,5 +59,5 @@
 | Sort countries   | 301.9         | 70.2           | 76.7%       |
 | Search countries | 142.6         | 30.1           | 78.9%       |
 | Change year      | 272.6         | 89.5           | 67.2%       |
-| Toggle column    | 298.6         | 11.8           | 96.0%       |
-| **Average**      | **253.9**     | **50.4**       | **80.2%**   |
+| Toggle column    | 299.8         | 10.9           | 96.4%       |
+| **Average**      | **254.2**     | **50.2**       | **80.3%**   |

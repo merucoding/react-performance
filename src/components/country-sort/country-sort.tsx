@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { COUNTRY_SORT, ORDER_SORT } from '../../constants';
 import type { CountrySort, OrderSort } from '../../types';
 import styles from './country-sort.module.css';
@@ -9,7 +10,7 @@ type CountrySortSelectProps = {
   onSortOrderToggle: () => void;
 };
 
-export const CountrySortSelect = ({
+export const CountrySortSelect = memo(({
   sortField,
   sortOrder,
   onChange,
@@ -32,4 +33,4 @@ export const CountrySortSelect = ({
       </button>
     </div>
   );
-};
+});
